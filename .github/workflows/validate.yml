@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  syntax-check:
+  source-integrity:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,49 +19,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Extract inline application script
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-          html = Path('index.html').read_text(encoding='utf-8')
-          scripts = re.findall(r'<script>(.*?)</script>', html, flags=re.S)
-          if len(scripts) != 1:
-              raise SystemExit(f'Expected one inline app script, found {len(scripts)}')
-          Path('/tmp/yugatn-art-app.js').write_text(scripts[0], encoding='utf-8')
-          print(f'Extracted {len(scripts[0])} characters of application JavaScript')
-          PY
+      - name: Validate HTML structure and DOM hooks
+        run: python3 scripts/validate-prototype.py --extract-script /tmp/yugatn-art-app.js
       - name: Check JavaScript syntax
         run: node --check /tmp/yugatn-art-app.js
-      - name: Verify required controls and prototype 0.5 markers
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          html = Path('index.html').read_text(encoding='utf-8')
-          required_ids = [
-              'saveProjectBtn', 'openProjectBtn', 'pressureCurve', 'saveStatus',
-              'fitBtn', 'undoBtn', 'redoBtn', 'addLayer', 'deleteLayer',
-              'duplicateLayer', 'moveLayerUp', 'moveLayerDown', 'soloLayer',
-              'alphaLockBtn', 'layerList', 'smooth',
-          ]
-          missing = [item for item in required_ids if f'id="{item}"' not in html]
-          if missing:
-              raise SystemExit('Missing required controls: ' + ', '.join(missing))
-          markers = [
-              'Prototype 0.5',
-              'stabStep',
-              'stabFlush',
-              'alphaLock',
-              'source-atop',
-              'duplicateLayer',
-              'layerThumbData',
-              'yugatn-art-project',
-              'openAutosaveDB',
-          ]
-          missing_m = [m for m in markers if m not in html]
-          if missing_m:
-              raise SystemExit('Missing prototype markers: ' + ', '.join(missing_m))
-          if 'Prototype 0.4' in html and 'Prototype 0.5' not in html:
-              raise SystemExit('index.html still reports Prototype 0.4 without 0.5')
-          print('Required prototype 0.5 controls and markers found')
-          PY
