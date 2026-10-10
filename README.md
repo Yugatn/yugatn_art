@@ -10,12 +10,13 @@ A cross-platform digital art studio concept combining the immediacy of Procreate
 - **Natural strokes:** pressure/tilt-aware architecture with graceful fallback to pointer input.
 - **Artist-first workspace:** canvas-first layout, compact tool rail, contextual controls, layers and color always close at hand.
 - **Non-destructive workflow:** layer-based composition, undo/redo, visibility, opacity and blend-mode foundations.
-- **Exportable work:** PNG export first; layered project format and additional export formats are planned.
+- **Exportable work:** PNG export and a version-1 `.yugatn` layered project file; the format is a prototype and is not optimized for large canvases.
+- **Privacy by default:** drawing and autosave remain in the current browser profile; no account or cloud upload is required.
 - **Cross-platform strategy:** start with a responsive web prototype to validate the workflow, then evaluate a native drawing engine for high-performance desktop/tablet use.
 
 ## Prototype
 
-Open `index.html` in a modern browser or serve this directory with a static web server. The prototype is intentionally dependency-free. It demonstrates the workspace, pointer drawing, basic brush controls, color selection, undo/redo, layers, and PNG export. It is a workflow prototype, not yet a production raster engine.
+Open `index.html` in a modern browser or serve this directory with a static web server. The prototype is intentionally dependency-free. It demonstrates pointer drawing, brush/eraser/line/eyedropper, layers and blend modes, undo/redo, PNG export, editable `.yugatn` import/export, IndexedDB local autosave/recovery, wheel zoom, Space+drag pan, and a configurable pressure response curve. The canvas remains fixed at 1400 × 900 px; this is still an early prototype, not a production raster engine. Browser/device verification is tracked separately in `docs/TEST_LOG.md`.
 
 ## Research basis
 
