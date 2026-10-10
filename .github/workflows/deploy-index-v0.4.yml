@@ -2,7 +2,9 @@ name: Deploy index v0.4
 on:
   push:
     paths:
-      - 'payloads/yugatn-art-index-v0.4.gz.b64'
+      - 'payloads/yugatn-art-index-v0.4.part0.b64'
+      - 'payloads/yugatn-art-index-v0.4.part1.b64'
+      - 'payloads/yugatn-art-index-v0.4.part2.b64'
       - 'scripts/deploy-index-v0.4.py'
       - '.github/workflows/deploy-index-v0.4.yml'
   workflow_dispatch:
