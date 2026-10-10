@@ -21,15 +21,19 @@ The roadmap is capability-driven. A milestone is complete only when its acceptan
 - [x] Add debounced local autosave in IndexedDB with startup draft recovery (browser verification pending).
 - [x] Add a transparent-background export path in the prototype (browser verification still pending).
 - [ ] Add automated export tests.
+- [x] Add layer lock, alpha lock, duplicate, reorder controls, and solo-active-layer view (browser verification pending).
 - [ ] Add layer thumbnails and drag-to-reorder.
-- [x] Add wheel zoom, Space+drag pan, and fit/reset without changing document coordinates (browser verification pending).\n- [ ] Add canvas rotation.
+- [x] Add wheel zoom, Space+drag pan, and fit/reset without changing document coordinates (browser verification pending).
+- [ ] Add canvas rotation.
 
 ## Phase 2 — Artist-grade foundations
 - [ ] Implement a normalized stylus input model: pressure, tilt, azimuth, timestamps, pointer type.
-- [x] Add a configurable pressure response curve for devices reporting stylus pressure (physical-device calibration and browser verification pending).\n- [ ] Measure real pressure support on target devices.
+- [x] Add a configurable pressure response curve for devices reporting stylus pressure (physical-device calibration and browser verification pending).
+- [ ] Measure real pressure support on target devices.
 - [ ] Implement brush presets, flow, taper, texture, and stabilization settings.
 - [ ] Add selection, transform, fill, shapes, and color sampling improvements.
-- [ ] Add clipping, alpha lock, masks, groups, and a tested set of blend modes.
+- [ ] Add clipping masks, non-destructive masks, groups, and a tested set of blend modes.
+- [x] Add alpha lock (preserve existing layer alpha while painting; browser verification pending).
 - [ ] Add canvas color-space policy and project metadata.
 - [ ] Establish performance budgets and a large-canvas test suite.
 
