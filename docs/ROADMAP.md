@@ -9,7 +9,8 @@ The roadmap is capability-driven. A milestone is complete only when its acceptan
 - [x] Document product requirements and architecture boundaries.
 - [ ] Verify the prototype manually in current Chrome, Safari, and Firefox. See `docs/TEST_LOG.md` for current unverified status.
 - [ ] Fix any defects found during browser testing.
-- [ ] Verify `.yugatn` round-trip (save, clear, reopen) and malformed-file rejection in browsers.\n- [x] Record explicit test status and Pages deployment checklist in `docs/TEST_LOG.md`.
+- [ ] Verify `.yugatn` round-trip (save, clear, reopen) and malformed-file rejection in browsers.
+- [x] Record explicit test status and Pages deployment checklist in `docs/TEST_LOG.md`.
 
 ## Phase 1 — Make drawing dependable
 - [ ] Split prototype code into testable modules.
