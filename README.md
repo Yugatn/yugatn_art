@@ -16,7 +16,7 @@ A cross-platform digital art studio concept combining the immediacy of Procreate
 
 ## Prototype
 
-Open `index.html` in a modern browser or serve this directory with a static web server. The prototype is intentionally dependency-free. It demonstrates pointer drawing, brush/eraser/line/eyedropper, layers and blend modes, undo/redo, PNG export, editable `.yugatn` import/export, IndexedDB local autosave/recovery, wheel zoom, Space+drag pan, and a configurable pressure response curve. The canvas remains fixed at 1400 × 900 px; this is still an early prototype, not a production raster engine. Browser/device verification is tracked separately in `docs/TEST_LOG.md`.
+Open `index.html` in a modern browser or serve this directory with a static web server. The prototype is intentionally dependency-free. It demonstrates pointer drawing, brush/eraser/line/eyedropper, layers and blend modes, undo/redo, PNG export, editable `.yugatn` import/export, IndexedDB local autosave/recovery, wheel zoom, Space+drag pan, a configurable pressure response curve, layer lock, alpha lock, duplicate/reorder controls, and solo-layer view. The canvas remains fixed at 1400 × 900 px; this is still an early prototype, not a production raster engine. Browser/device verification is tracked separately in `docs/TEST_LOG.md`.
 
 ## Research basis
 
