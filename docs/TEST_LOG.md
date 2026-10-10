@@ -7,7 +7,7 @@
 
 - Default branch: `main`.
 - A GitHub Pages workflow exists at `.github/workflows/pages.yml` and is triggered by pushes to `main`/ `master` or manual dispatch.
-- The repository owner reported that the Pages URL currently returns 404. The workflow file alone does not prove that Pages is configured or that a deployment succeeded.
+- The repository owner reported that the Pages URL currently returns 404. The latest Pages deployment run failed at Configure Pages: the GitHub API returned `Not Found` for the Pages site and `Resource not accessible by integration` when attempting to create it. This requires enabling Pages in repository Settings or granting appropriate repository permissions; the workflow cannot self-enable it with its current token.
 - Check **Settings → Pages** and **Actions → Deploy static prototype to GitHub Pages**. If Pages is not enabled, select GitHub Actions as the build/deployment source and rerun the workflow.
 - The current repository prototype is a single `index.html`; modularization remains pending.
 - A new `Validate prototype source` GitHub Actions workflow checks inline JavaScript syntax and required UI controls on pushes and pull requests. The workflow result must be inspected after this commit; adding the workflow is not itself a passing test.
@@ -20,6 +20,7 @@
 - Pressure response curve control for pointer pressure reported by a stylus.
 - Autosave hooks for strokes and common layer/settings changes.
 - A four-entry pixel-snapshot undo history limit.
+- Layer lock, alpha lock, duplicate, up/down reordering, and solo-active-layer controls.
 
 ## Test results
 
@@ -32,7 +33,8 @@
 | IndexedDB reload recovery | NOT RUN | Manual checklist pending |
 | Zoom/pan interactions | NOT RUN | Manual checklist pending |
 | Real stylus pressure | NOT TESTED | Requires supported physical stylus/browser |
-| GitHub Pages deployment | NOT VERIFIED | Owner-reported 404; deployment/configuration not confirmed |
+| Layer lock/alpha lock/duplicate/reorder/solo | NOT RUN | Implemented in source; manual verification pending |
+| GitHub Pages deployment | BLOCKED | Latest run failed at Configure Pages: Pages site not found and integration cannot create it; enable Pages in repository Settings |
 
 ## Next test pass
 
