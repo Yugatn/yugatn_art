@@ -1,0 +1,46 @@
+name: Validate prototype source
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  syntax-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Extract inline application script
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          html = Path('index.html').read_text(encoding='utf-8')
+          scripts = re.findall(r'<script>(.*?)</script>', html, flags=re.S)
+          if len(scripts) != 1:
+              raise SystemExit(f'Expected one inline app script, found {len(scripts)}')
+          Path('/tmp/yugatn-art-app.js').write_text(scripts[0], encoding='utf-8')
+          print(f'Extracted {len(scripts[0])} characters of application JavaScript')
+          PY
+      - name: Check JavaScript syntax
+        run: node --check /tmp/yugatn-art-app.js
+      - name: Verify required controls are present
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          html = Path('index.html').read_text(encoding='utf-8')
+          required = ['saveProjectBtn', 'openProjectBtn', 'pressureCurve', 'saveStatus', 'fitBtn', 'undoBtn', 'redoBtn']
+          missing = [item for item in required if f'id="{item}"' not in html]
+          if missing:
+              raise SystemExit('Missing required controls: ' + ', '.join(missing))
+          print('Required prototype controls found')
+          PY
