@@ -1,44 +1,31 @@
 # Test log — Yugatn Art
 
-**Last code update reviewed:** 2026-10-10 (Stage A)  
-**HEAD at log write:** see latest `main` after Stage A docs/CI commits.
+**Last code update reviewed:** 2026-10-10 (Stage A hardening branch)  
+**Runtime status:** no browser/device PASS is inferred from static CI.
 
-## Stage A — repository observations (OBSERVED)
+## Stage A — repository observations
 
 | Check | Result | Evidence |
 |---|---|---|
-| Default branch | `main` | clone / API |
-| `index.html` reports Prototype 0.5 | OBSERVED | markers: `Prototype 0.5`, `stabStep`, `alphaLock`, `locked`, `duplicateLayer`, `layerThumbData`, `source-atop` |
-| Inline JS syntax | PASS (static) | `node --check` on extracted script locally and via Validate workflow |
-| Validate workflow | expected PASS after Stage A push | `.github/workflows/validate.yml` extended with 0.5 markers |
-| Official Pages deploy | FAIL / BLOCKED | Job fails at **Configure Pages**; site API not found; token cannot create Pages site |
-| Public URL | FAIL | `https://yugatn.github.io/yugatn_art/` → HTTP **404** |
-| `gh-pages` branch deploy | added in Stage A | workflow `deploy-gh-pages-branch.yml`; result after first run |
-| Browser UI / drawing | NOT_TESTED | no interactive browser in this agent environment |
-| Real stylus pressure | NOT_TESTED | needs physical device |
-| `.yugatn` pixel round-trip | NOT_TESTED | Stage B |
-| IndexedDB autosave reload | NOT_TESTED | Stage B |
+| Canonical runtime source | OBSERVED | `index.html` on `main` |
+| Prototype 0.5 markers and controls | OBSERVED | `index.html` |
+| Existing static syntax check | PASS (reported) | `node --check` on extracted inline JS |
+| Official Pages deployment | BLOCKED (reported) | `Configure Pages` failure; owner must enable Pages/source |
+| Public demo URL | FAIL (reported) | `https://yugatn.github.io/yugatn_art/` returned HTTP 404 in Stage A report |
+| Branch deployment | PASS (reported) | `gh-pages` workflow succeeded |
+| Browser UI / drawing | NOT_TESTED | Requires browser execution |
+| Real stylus pressure | NOT_TESTED | Requires supported physical device |
+| `.yugatn` pixel round-trip | NOT_TESTED | Requires functional test |
+| IndexedDB reload recovery | NOT_TESTED | Requires browser execution |
 
-### Pages failure detail (OBSERVED)
+## Stage A hardening — implementation intent
 
-- Workflow: `Deploy static prototype to GitHub Pages`
-- Failing step: **Configure Pages** (`actions/configure-pages`)
-- Subsequent steps (Upload, Deploy) are skipped
-- Root cause class: repository Pages product not enabled for GitHub Actions source; workflow token lacks permission to create the site (`Resource not accessible by integration` / site Not Found)
-- **Owner action required:** Settings → Pages → Source = GitHub Actions **or** Deploy from branch `gh-pages` (see `docs/BUILD.md`)
+The hardening branch adds a shared static validator, checks literal DOM references and duplicate IDs, and makes both deploy workflows publish an allowlisted directory containing only `index.html` and `.nojekyll`.
 
-## Features present in source (code review, not runtime PASS)
+**Status until workflows run on this branch:** NOT_TESTED. Do not label these checks PASS until GitHub Actions confirms success.
 
-- Brush / eraser / line / eyedropper
-- Streamline stabilizer (`stabStep` / `stabFlush`)
-- Layers: opacity, blend modes, lock, alpha lock (`source-atop`), duplicate, reorder, solo, thumbnails
-- Undo/redo: pixel snapshots, history length 4 (structural layer ops not fully command-based)
-- `.yugatn` v1 JSON + base64 PNG per layer
-- IndexedDB debounced autosave
-- Zoom (wheel), pan (Space+drag), fit
+## Stage B — next runtime checks
 
-## Next passes
-
-1. Owner enables Pages (A or B in `docs/BUILD.md`) → re-check HTTP 200 + Prototype 0.5 in page source.
-2. Stage B: automated functional tests (layers, draw, history bounds, import validation).
-3. Manual browser matrix per `docs/TESTING.md`.
+1. Verify the live demo returns HTTP 200 and contains Prototype 0.5.
+2. Add automated browser smoke tests for startup, drawing, layers, undo/redo, save/open and autosave.
+3. Record actual browser/OS/version and each test result; keep stylus hardware testing separate.

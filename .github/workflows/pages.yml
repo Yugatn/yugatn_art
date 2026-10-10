@@ -6,8 +6,8 @@ on:
   workflow_dispatch:
 
 # Requires repository Settings → Pages → Source = GitHub Actions.
-# enablement:true cannot create the site when the token lacks admin Pages access;
-# that step fails with "Resource not accessible by integration" until the owner enables Pages once.
+# The repository owner must enable Pages once; this workflow cannot create
+# the Pages site when its token lacks repository administration permission.
 
 permissions:
   contents: read
@@ -27,22 +27,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Guard published version markers
+      - name: Validate canonical source
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          html = Path('index.html').read_text(encoding='utf-8')
-          for m in ('Prototype 0.5', 'stabStep', 'alphaLock', 'duplicateLayer'):
-              if m not in html:
-                  raise SystemExit(f'Publish guard failed: missing {m}')
-          print('Publish guard OK')
-          PY
+          python3 scripts/validate-prototype.py --extract-script /tmp/yugatn-art-app.js
+          node --check /tmp/yugatn-art-app.js
+      - name: Prepare minimal publish artifact
+        run: |
+          rm -rf _site
+          mkdir -p _site
+          cp index.html _site/index.html
+          : > _site/.nojekyll
+          test -s _site/index.html
+          grep -q 'Prototype 0.5' _site/index.html
+          # Allowlist: publish only the app shell, not repository source/docs/scripts.
+          test "$(find _site -maxdepth 1 -type f | wc -l | tr -d ' ')" = "2"
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
