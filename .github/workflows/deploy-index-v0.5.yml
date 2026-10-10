@@ -1,0 +1,30 @@
+name: Deploy index v0.5
+on:
+  push:
+    paths:
+      - 'payloads/yugatn-art-index-v0.5.part0.b64'
+      - 'payloads/yugatn-art-index-v0.5.part1.b64'
+      - 'payloads/yugatn-art-index-v0.5.part2.b64'
+      - 'scripts/deploy-index-v0.5.py'
+      - '.github/workflows/deploy-index-v0.5.yml'
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Write index.html
+        run: python3 scripts/deploy-index-v0.5.py
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "feat: prototype 0.5 — restore lock/alphaLock, keep stabilizer + layer thumbs"
+            git push
+          fi
