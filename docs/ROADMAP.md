@@ -7,9 +7,9 @@ The roadmap is capability-driven. A milestone is complete only when its acceptan
 - [x] Create a dependency-free browser workspace prototype.
 - [x] Add basic pointer drawing, color/size/opacity controls, eraser, line, eyedropper, layers, undo/redo, and PNG export.
 - [x] Document product requirements and architecture boundaries.
-- [ ] Verify the prototype manually in current Chrome, Safari, and Firefox.
+- [ ] Verify the prototype manually in current Chrome, Safari, and Firefox. See `docs/TEST_LOG.md` for current unverified status.
 - [ ] Fix any defects found during browser testing.
-- [ ] Verify `.yugatn` round-trip (save, clear, reopen) and malformed-file rejection in browsers.
+- [ ] Verify `.yugatn` round-trip (save, clear, reopen) and malformed-file rejection in browsers.\n- [x] Record explicit test status and Pages deployment checklist in `docs/TEST_LOG.md`.
 
 ## Phase 1 — Make drawing dependable
 - [ ] Split prototype code into testable modules.
@@ -17,15 +17,15 @@ The roadmap is capability-driven. A milestone is complete only when its acceptan
 - [ ] Add robust pointer cancellation, multi-pointer handling, and touch gesture policy.
 - [ ] Build deterministic document history for strokes and layer operations.
 - [x] Add manual editable project save/open with a versioned `.yugatn` JSON container and per-layer PNG data.
-- [ ] Add autosave and crash recovery.
+- [x] Add debounced local autosave in IndexedDB with startup draft recovery (browser verification pending).
 - [x] Add a transparent-background export path in the prototype (browser verification still pending).
 - [ ] Add automated export tests.
 - [ ] Add layer thumbnails and drag-to-reorder.
-- [ ] Add zoom, pan, fit, and rotation without changing document coordinates.
+- [x] Add wheel zoom, Space+drag pan, and fit/reset without changing document coordinates (browser verification pending).\n- [ ] Add canvas rotation.
 
 ## Phase 2 — Artist-grade foundations
 - [ ] Implement a normalized stylus input model: pressure, tilt, azimuth, timestamps, pointer type.
-- [ ] Measure real pressure support on target devices; expose configurable pressure curves.
+- [x] Add a configurable pressure response curve for devices reporting stylus pressure (physical-device calibration and browser verification pending).\n- [ ] Measure real pressure support on target devices.
 - [ ] Implement brush presets, flow, taper, texture, and stabilization settings.
 - [ ] Add selection, transform, fill, shapes, and color sampling improvements.
 - [ ] Add clipping, alpha lock, masks, groups, and a tested set of blend modes.
