@@ -1,0 +1,51 @@
+name: Deploy static site to gh-pages branch
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+# Alternative publish path using contents:write only.
+# Owner can set Settings → Pages → Source = Deploy from a branch → gh-pages / (root).
+# This does not require pages:write or the github-pages environment.
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "gh-pages-branch"
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Guard published version markers
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          html = Path('index.html').read_text(encoding='utf-8')
+          for m in ('Prototype 0.5', 'stabStep', 'alphaLock', 'duplicateLayer'):
+              if m not in html:
+                  raise SystemExit(f'Publish guard failed: missing {m}')
+          print('Publish guard OK')
+          PY
+      - name: Prepare publish directory
+        run: |
+          mkdir -p _site
+          cp index.html .nojekyll _site/
+          # Optional docs for browsing from the same origin
+          if [ -d docs ]; then cp -r docs _site/docs; fi
+          cp README.md _site/ 2>/dev/null || true
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          publish_branch: gh-pages
+          force_orphan: true
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_message: "deploy: static prototype from main"

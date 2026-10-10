@@ -1,41 +1,44 @@
 # Test log — Yugatn Art
 
-**Last code update reviewed:** 2026-10-10  
-**Test execution status:** NOT RUN in a real browser or stylus device during this implementation pass. No pass is claimed.
+**Last code update reviewed:** 2026-10-10 (Stage A)  
+**HEAD at log write:** see latest `main` after Stage A docs/CI commits.
 
-## Repository observations
+## Stage A — repository observations (OBSERVED)
 
-- Default branch: `main`.
-- A GitHub Pages workflow exists at `.github/workflows/pages.yml` and is triggered by pushes to `main`/ `master` or manual dispatch.
-- The repository owner reported that the Pages URL currently returns 404. The latest Pages deployment run failed at Configure Pages: the GitHub API returned `Not Found` for the Pages site and `Resource not accessible by integration` when attempting to create it. This requires enabling Pages in repository Settings or granting appropriate repository permissions; the workflow cannot self-enable it with its current token.
-- Check **Settings → Pages** and **Actions → Deploy static prototype to GitHub Pages**. If Pages is not enabled, select GitHub Actions as the build/deployment source and rerun the workflow.
-- The current repository prototype is a single `index.html`; modularization remains pending.
-- A new `Validate prototype source` GitHub Actions workflow checks inline JavaScript syntax and required UI controls on pushes and pull requests. The workflow result must be inspected after this commit; adding the workflow is not itself a passing test.
-
-## Features implemented in code, awaiting execution
-
-- Editable project save/open using version-1 `.yugatn` JSON with base64 PNG data per layer.
-- Debounced local autosave in IndexedDB and startup attempt to restore the last saved draft.
-- Canvas zoom via wheel, pan via Space+drag, and fit/reset.
-- Pressure response curve control for pointer pressure reported by a stylus.
-- Autosave hooks for strokes and common layer/settings changes.
-- A four-entry pixel-snapshot undo history limit.
-- Layer lock, alpha lock, duplicate, up/down reordering, and solo-active-layer controls.
-
-## Test results
-
-| Test | Result | Evidence |
+| Check | Result | Evidence |
 |---|---|---|
-| Static source update present on `main` | OBSERVED | GitHub contents API returned the updated `index.html` after commits |
-| Browser syntax/runtime | NOT RUN | No browser execution available in this pass; CI syntax workflow added but result not yet inspected |
-| Chrome/Safari/Firefox drawing | NOT RUN | No browser/device test log supplied |
-| `.yugatn` round-trip | NOT RUN | Manual checklist pending |
-| IndexedDB reload recovery | NOT RUN | Manual checklist pending |
-| Zoom/pan interactions | NOT RUN | Manual checklist pending |
-| Real stylus pressure | NOT TESTED | Requires supported physical stylus/browser |
-| Layer lock/alpha lock/duplicate/reorder/solo | NOT RUN | Implemented in source; manual verification pending |
-| GitHub Pages deployment | BLOCKED | Latest run failed at Configure Pages: Pages site not found and integration cannot create it; enable Pages in repository Settings |
+| Default branch | `main` | clone / API |
+| `index.html` reports Prototype 0.5 | OBSERVED | markers: `Prototype 0.5`, `stabStep`, `alphaLock`, `locked`, `duplicateLayer`, `layerThumbData`, `source-atop` |
+| Inline JS syntax | PASS (static) | `node --check` on extracted script locally and via Validate workflow |
+| Validate workflow | expected PASS after Stage A push | `.github/workflows/validate.yml` extended with 0.5 markers |
+| Official Pages deploy | FAIL / BLOCKED | Job fails at **Configure Pages**; site API not found; token cannot create Pages site |
+| Public URL | FAIL | `https://yugatn.github.io/yugatn_art/` → HTTP **404** |
+| `gh-pages` branch deploy | added in Stage A | workflow `deploy-gh-pages-branch.yml`; result after first run |
+| Browser UI / drawing | NOT_TESTED | no interactive browser in this agent environment |
+| Real stylus pressure | NOT_TESTED | needs physical device |
+| `.yugatn` pixel round-trip | NOT_TESTED | Stage B |
+| IndexedDB autosave reload | NOT_TESTED | Stage B |
 
-## Next test pass
+### Pages failure detail (OBSERVED)
 
-Run every applicable item in `docs/TESTING.md`, record browser and OS versions, and attach reproducible defects before marking a feature complete.
+- Workflow: `Deploy static prototype to GitHub Pages`
+- Failing step: **Configure Pages** (`actions/configure-pages`)
+- Subsequent steps (Upload, Deploy) are skipped
+- Root cause class: repository Pages product not enabled for GitHub Actions source; workflow token lacks permission to create the site (`Resource not accessible by integration` / site Not Found)
+- **Owner action required:** Settings → Pages → Source = GitHub Actions **or** Deploy from branch `gh-pages` (see `docs/BUILD.md`)
+
+## Features present in source (code review, not runtime PASS)
+
+- Brush / eraser / line / eyedropper
+- Streamline stabilizer (`stabStep` / `stabFlush`)
+- Layers: opacity, blend modes, lock, alpha lock (`source-atop`), duplicate, reorder, solo, thumbnails
+- Undo/redo: pixel snapshots, history length 4 (structural layer ops not fully command-based)
+- `.yugatn` v1 JSON + base64 PNG per layer
+- IndexedDB debounced autosave
+- Zoom (wheel), pan (Space+drag), fit
+
+## Next passes
+
+1. Owner enables Pages (A or B in `docs/BUILD.md`) → re-check HTTP 200 + Prototype 0.5 in page source.
+2. Stage B: automated functional tests (layers, draw, history bounds, import validation).
+3. Manual browser matrix per `docs/TESTING.md`.

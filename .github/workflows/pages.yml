@@ -5,6 +5,10 @@ on:
     branches: ["main", "master"]
   workflow_dispatch:
 
+# Requires repository Settings → Pages → Source = GitHub Actions.
+# enablement:true cannot create the site when the token lacks admin Pages access;
+# that step fails with "Resource not accessible by integration" until the owner enables Pages once.
+
 permissions:
   contents: read
   pages: write
@@ -23,10 +27,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Guard published version markers
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          html = Path('index.html').read_text(encoding='utf-8')
+          for m in ('Prototype 0.5', 'stabStep', 'alphaLock', 'duplicateLayer'):
+              if m not in html:
+                  raise SystemExit(f'Publish guard failed: missing {m}')
+          print('Publish guard OK')
+          PY
       - name: Configure Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
