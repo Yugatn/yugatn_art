@@ -23,7 +23,7 @@ Open `index.html` in a modern browser or serve this directory with a static web 
 - Adobe Photoshop Help: painting tools, brush presets, tablet input, opacity/flow and texture.
 - ibis Paint X official materials should be reviewed during the next research pass for its manga/illustration workflow, stabilization, rulers, clipping, and community features.
 
-See [`docs/PRODUCT_SPEC.md`](docs/PRODUCT_SPEC.md), [`docs/ROADMAP.md`](docs/ROADMAP.md), and [`docs/RESEARCH.md`](docs/RESEARCH.md) for the public-source research synthesis.
+See [`docs/PRODUCT_SPEC.md`](docs/PRODUCT_SPEC.md), [`docs/ROADMAP.md`](docs/ROADMAP.md), and [`docs/RESEARCH.md`](docs/RESEARCH.md) for the public-source research synthesis. See [`docs/TESTING.md`](docs/TESTING.md) for the manual verification checklist.
 
 ## Development principles
 
