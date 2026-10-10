@@ -9,15 +9,17 @@ The roadmap is capability-driven. A milestone is complete only when its acceptan
 - [x] Document product requirements and architecture boundaries.
 - [ ] Verify the prototype manually in current Chrome, Safari, and Firefox.
 - [ ] Fix any defects found during browser testing.
+- [ ] Verify `.yugatn` round-trip (save, clear, reopen) and malformed-file rejection in browsers.
 
 ## Phase 1 — Make drawing dependable
 - [ ] Split prototype code into testable modules.
 - [ ] Add stroke sampling/resampling and configurable smoothing.
 - [ ] Add robust pointer cancellation, multi-pointer handling, and touch gesture policy.
 - [ ] Build deterministic document history for strokes and layer operations.
-- [ ] Add local project save/open with schema versioning.
+- [x] Add manual editable project save/open with a versioned `.yugatn` JSON container and per-layer PNG data.
 - [ ] Add autosave and crash recovery.
-- [ ] Add transparent PNG export and automated export tests.
+- [x] Add a transparent-background export path in the prototype (browser verification still pending).
+- [ ] Add automated export tests.
 - [ ] Add layer thumbnails and drag-to-reorder.
 - [ ] Add zoom, pan, fit, and rotation without changing document coordinates.
 
