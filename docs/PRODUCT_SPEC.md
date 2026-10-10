@@ -57,13 +57,15 @@ Research areas for a dedicated verification pass: stabilization, rulers and symm
 - Eraser, straight-line tool, and eyedropper.
 - Basic layer stack: add, select, rename, delete, visibility, opacity, blend mode.
 - Undo/redo for layer pixel edits.
-- PNG export.
-- Keyboard shortcuts for core tools.
+- PNG export with a transparent-background option.
+- Manual editable project save/open (`.yugatn`, version 1) containing document metadata, settings and per-layer PNG images.
+- Basic validation when loading a project, including format/version, layer count, image type/dimensions, and a file-size ceiling.
+- Keyboard shortcuts for core tools and project save/open.
 - No external runtime dependencies.
 
 ### Required before calling the product a usable MVP
 - Reliable undo/redo covering every document operation.
-- Persistent local project saving and recovery.
+- Crash recovery and autosave; current manual project save/open is a prototype, not autosave.
 - Explicit document dimensions, DPI metadata strategy, and transparent-background export.
 - Proper line rendering with interpolation, pressure curves, and configurable stabilization.
 - Layer thumbnails and drag-to-reorder.
@@ -139,7 +141,7 @@ Store canvas dimensions, color-space intent, layer ordering, opacity, visibility
 - Core drawing should work offline.
 - Optional cloud/AI services must be clearly disclosed and separately configurable.
 
-## 12. Acceptance criteria for MVP
+## 12. Prototype file format (version 1)\n\nThe current `.yugatn` file is UTF-8 JSON with a format marker, schema version, document name/dimensions/background, selected brush settings, active-layer index, and an ordered list of layers. Each layer stores a PNG data URL plus name, visibility, opacity and blend mode. This format is intentionally simple for the first prototype; it duplicates image bytes as base64 and is not optimized for large canvases. Do not treat it as a final long-term binary format.\n\nThe loader rejects unknown versions, unsupported dimensions, excessive layer counts, oversized files and invalid layer images. This is basic defensive validation, not a full hostile-file security audit.\n\n## 13. Acceptance criteria for MVP
 
 1. A new user can open the app and draw without an account or stylus.
 2. Mouse, touch, and stylus-capable input paths are tested separately.
