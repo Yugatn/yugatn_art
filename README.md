@@ -61,7 +61,7 @@ Browser/device PASS results are tracked only in `docs/TEST_LOG.md` — code pres
 
 ## License
 
-No license has been selected yet. Until one is added, all rights remain reserved by the copyright holder.
+Original materials are currently marked **All rights reserved**. No open-source license has been selected. See [LICENSE](LICENSE). Existing third-party licenses are unaffected.
 
 
 ## Паспорт проекта и правовой статус
